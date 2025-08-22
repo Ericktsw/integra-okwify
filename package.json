@@ -5,8 +5,9 @@
   "main": "api/webhook.js",
   "scripts": {
     "dev": "vercel dev",
-    "build": "vercel build",
-    "deploy": "vercel --prod"
+    "build": "echo 'No build step required for serverless functions'",
+    "deploy": "vercel --prod",
+    "test": "node test/webhook-test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
