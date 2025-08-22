@@ -1,0 +1,34 @@
+{
+  "name": "kwify-firebase-integration",
+  "version": "1.0.0",
+  "description": "Integração entre Kwify, Firebase e envio de email via Vercel",
+  "main": "api/webhook.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.1",
+    "firebase-admin": "^12.0.0",
+    "nodemailer": "^6.9.8"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "kwify",
+    "firebase",
+    "email",
+    "vercel",
+    "webhook",
+    "integration"
+  ],
+  "author": "Erick",
+  "license": "MIT"
+}

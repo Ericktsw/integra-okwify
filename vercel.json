@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "kwify-firebase-integration",
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/webhook",
+      "dest": "/api/webhook.js",
+      "methods": ["POST", "OPTIONS"]
+    },
+    {
+      "src": "/webhook",
+      "dest": "/api/webhook.js",
+      "methods": ["POST", "OPTIONS"]
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
+}
