@@ -34,15 +34,15 @@ function verifyWebhookSignature(payload, signature, secret) {
  * @returns {Object} - Informações do cliente
  */
 function extractCustomerInfo(kwifyData) {
-  // Adapte estes campos conforme a estrutura real da Kwify
+  // Estrutura atualizada conforme dados reais da Kwify
   return {
-    email: kwifyData.customer?.email || kwifyData.buyer_email,
-    name: kwifyData.customer?.name || kwifyData.buyer_name || 'Cliente',
-    phone: kwifyData.customer?.phone || kwifyData.buyer_phone,
-    productName: kwifyData.product?.name || kwifyData.product_name,
-    amount: kwifyData.amount || kwifyData.price,
-    transactionId: kwifyData.transaction_id || kwifyData.id,
-    status: kwifyData.status
+    email: kwifyData.Customer?.email || kwifyData.customer?.email || kwifyData.buyer_email,
+    name: kwifyData.Customer?.full_name || kwifyData.Customer?.first_name || kwifyData.customer?.name || kwifyData.buyer_name || 'Cliente',
+    phone: kwifyData.Customer?.mobile || kwifyData.customer?.phone || kwifyData.buyer_phone,
+    productName: kwifyData.Product?.product_name || kwifyData.product?.name || kwifyData.product_name,
+    amount: kwifyData.Commissions?.charge_amount || kwifyData.amount || kwifyData.price,
+    transactionId: kwifyData.order_id || kwifyData.transaction_id || kwifyData.id,
+    status: kwifyData.order_status || kwifyData.status
   };
 }
 
@@ -88,13 +88,16 @@ export default async function handler(req, res) {
     console.log('Dados da Kwify:', kwifyData);
 
     // Verificar se é uma compra aprovada
-    if (kwifyData.status !== 'approved' && kwifyData.status !== 'paid') {
-      console.log('Status da transação não é aprovado:', kwifyData.status);
+    const orderStatus = kwifyData.order_status || kwifyData.status;
+    if (orderStatus !== 'approved' && orderStatus !== 'paid') {
+      console.log('Status da transação não é aprovado:', orderStatus);
       return res.status(200).json({ 
         message: 'Webhook recebido, mas transação não aprovada',
-        status: kwifyData.status
+        status: orderStatus
       });
     }
+    
+    console.log('Transação aprovada, processando...', orderStatus);
 
     // Extrair informações do cliente
     const customerInfo = extractCustomerInfo(kwifyData);
